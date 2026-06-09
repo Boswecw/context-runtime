@@ -1,0 +1,36 @@
+[package]
+name = "context-runtime"
+version = "0.1.0"
+edition = "2024"
+description = "PCC-conforming context runtime: gather -> assemble (precomputed-context-core) -> serve a governed ContextBundleManifest + code-native payloads over HTTP for forgeHQ"
+authors = ["Boswell Digital Solutions LLC"]
+license = "Proprietary"
+
+[[bin]]
+name = "context-runtime"
+path = "src/main.rs"
+
+[lib]
+name = "context_runtime"
+path = "src/lib.rs"
+
+[dependencies]
+# HTTP runtime — matches the ecosystem Rust convention (Forge_Command/api)
+axum = { version = "0.8", features = ["macros"] }
+tokio = { version = "1", features = ["full"] }
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+# Hashing for payload content integrity
+sha2 = "0.10"
+# Timestamps for the code-native artifact records
+chrono = { version = "0.4", features = ["clock"] }
+# Errors / logging
+thiserror = "2"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+# The real governed contract surface — assemble_context + code-native contracts
+precomputed-context-core = { path = "../../precomputed-context-core" }
+
+[dev-dependencies]
+reqwest = { version = "0.12", features = ["json"] }
