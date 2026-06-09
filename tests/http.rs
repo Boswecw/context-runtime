@@ -50,6 +50,8 @@ async fn http_assemble_fetch_payload_and_scope_escape() {
     let v: serde_json::Value = resp.json().await.unwrap();
     let bundle_id = v["context_bundle_id"].as_str().unwrap().to_string();
     assert!(bundle_id.starts_with("ctxb_"));
+    // task_intent_id is echoed so the chain (context → pact verify) shares it.
+    assert!(v["task_intent_id"].as_str().unwrap().starts_with("ti_codefix_"));
     let refs = v["context_item_refs"].as_array().unwrap();
     assert_eq!(refs.len(), 4);
     let first_ref = refs[0].as_str().unwrap().to_string();

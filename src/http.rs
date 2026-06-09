@@ -67,6 +67,9 @@ struct AssembleReq {
 
 #[derive(Debug, Serialize)]
 struct AssembleResp {
+    /// Echoed so the whole chain (context → verification) shares one intent id;
+    /// pact binds its receipt to {task_intent_id, context_bundle_id, bundle_hash}.
+    task_intent_id: String,
     context_bundle_id: String,
     bundle_hash: String,
     manifest: pcc::ContextBundleManifest,
@@ -112,6 +115,7 @@ async fn assemble_handler(
 
     let bundle = assemble(&params, SystemTime::now())?;
     let resp = AssembleResp {
+        task_intent_id: params.task_intent_id.clone(),
         context_bundle_id: bundle.manifest.context_bundle_id.clone(),
         bundle_hash: bundle.manifest.bundle_hash.clone(),
         manifest: bundle.manifest.clone(),

@@ -67,6 +67,7 @@ def main():
     refs = bundle["context_item_refs"]
     assert bundle_id.startswith("ctxb_"), bundle_id
     assert bundle["bundle_hash"], "missing bundle_hash"
+    assert bundle["task_intent_id"], "missing task_intent_id (needed for pact connectivity)"
     assert refs, "no admitted refs"
     print(
         f"[smoke] assembled {bundle_id} hash={bundle['bundle_hash']} "
